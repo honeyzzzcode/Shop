@@ -15,8 +15,9 @@ public class Product<products> {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public int setAmount(int amount) {
         this.amount = amount;
+        return amount;
     }
 
     public Product(String product, float price, int amount) {
@@ -25,5 +26,5 @@ public class Product<products> {
         this.amount = amount;
     }
 
-
 }
+

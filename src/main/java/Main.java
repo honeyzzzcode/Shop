@@ -12,9 +12,10 @@ public class Main {
         Product juice = new Product("Juice",5.00f,20);
 
         List<Product> products = new ArrayList<Product>();
-        products.add(rice.product);
+        products.add(rice);
         products.add(potatoes);
         products.add(juice);
+
 
         for (Product currentProducts: products){
             System.out.println(currentProducts);
@@ -25,29 +26,29 @@ public class Main {
         System.out.println(user1.name+ ", Please enter the value for credit:");
         String response = user1.creditUser(scanner.nextFloat());
         System.out.println("Your balance is:  "+user1.getUserBalance());
-        System.out.format("Which product do you want to buy?\n %s(%f )\n%s(%f )\n%s( %f)",rice.product,rice.price,potatoes.product,potatoes.price,juice.product,juice.price);
-        String choice = scanner.nextLine();
+        System.out.format("Which product do you want to buy?\n %s(%f )\n%s(%f )\n%s( %f)\n",rice.product,rice.price,potatoes.product,potatoes.price,juice.product,juice.price);
+        String choice = scanner.next();
        switch (choice){
            case "rice":
            double newbalance = user1.getUserBalance()- rice.price;
-               System.out.println("Your balance is:" + newbalance);
+               System.out.println("Thank you for purchase .Your balance is:" + newbalance);
+               int newamount = rice.setAmount(rice.amount-1);
+               System.out.println(newamount);
                break;
            case "potatoes":
-               double newbalance2 = user1.getUserBalance()- potatoes.price;
+             float newbalance2 = user1.getUserBalance()- potatoes.price;
                System.out.println("Thank you for purchase .Your balance is:" + newbalance2);
+               int newamount2 = potatoes.amount - 1;
                break;
            case "juice":
-               double newbalance3 = user1.getUserBalance()- juice.price;
-               System.out.println("Your balance is:" + newbalance3);
+               float newbalance3 = user1.getUserBalance()- juice.price;
+               System.out.println("Thank you for purchase .Your balance is:" + newbalance3);
+               int newamount3 = juice.amount - 1;
+
                break;
        }
     }
-    private static void potatoesBought() {
 
-    }
-
-    private static void juiceBought() {
-    }
 
 
 }
