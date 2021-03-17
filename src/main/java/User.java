@@ -1,14 +1,10 @@
-public class User {
+public class User extends Menu {
 
 
-    public int id = 0;
+    public double id;
     public float balance;
     public String name;
 
-
-    public int getId() {
-        return id;
-    }
 
     public float getBalance() {
         return balance;
@@ -18,12 +14,6 @@ public class User {
         this.balance = balance;
     }
 
-    public User(int id, String name, float balance) {
-        this.id = id;
-        this.name = name;
-        this.balance = balance;
-
-    }
     private User user;
 
     public String setActiveUser(User user) {
