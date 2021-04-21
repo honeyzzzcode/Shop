@@ -1,4 +1,4 @@
-package types;
+package controller;
 
 public enum Usertype {
     OWNER,

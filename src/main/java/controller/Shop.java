@@ -1,51 +1,94 @@
 package controller;
 
-import controller.Input;
-import controller.Product;
+import entity.Product;
+import entity.User;
 
-import javax.jws.soap.SOAPBinding;
 import java.util.ArrayList;
 
 public class Shop {
-   private static ArrayList<Product> products = new ArrayList<Product>();
-private ArrayList<User> users = new ArrayList<User>();
+    User user;
+    private static ArrayList<Product> products = new ArrayList<Product>();
+    private static ArrayList<User> users = new ArrayList<User>();
 
 
-    public void listProducts() {
-
-    }
-    public  String addProduct(Product product){
+    public String addProduct(Product product) {
         this.products.add(product);
-        return product.name +" added successfully";
+        return product.name + " added successfully";
     }
-    public ArrayList<Product> getAllProducts(){
+
+
+    public ArrayList<Product> getAllProducts() {
         return products;
     }
-    public Product getSingleProduct(int productId){
+
+    public Product getSingleProduct(int productId) {
         return this.products.get(productId);
 
     }
-    public  String addUser(User newuser){
-       users.add(newuser);
-        return newuser.name+" added successfully";
+
+    public String addUser(User newuser) {
+        users.add(newuser);
+        return newuser.name + " added successfully";
     }
-    public ArrayList<User> getUsers(){
+
+    public ArrayList<User> getUsers() {
         return users;
     }
 
 
-
-
-
-    public static void sellProduct() {
-        for (Product rec : products) {
-        System.out.println(rec.name);
-    }
-        Product product = new Product();
-        if (Input.askString("Which do you want to buy?").equalsIgnoreCase(product.name) ) {
-            product.amount = product.amount-1;
+    public String buyProduct(String productName, String userEmail, int noOfProduct) {
+        Product productToSell = findProductByName(productName);
+        if (productToSell == null) {
+            return "product not found";
         }
-        System.out.println(product.name +" is sold to you and "+ product.amount + " left");;
+        if (productToSell.getAmount() < noOfProduct) {
+            return "not enough items to fulfill your order";
+        }
+
+        User buyer = findUserByEmail(userEmail);
+        if (buyer == null) {
+            return "user not found"; }
+        float buyerBalance = buyer.getBalance();
+        float totalCostOfPurchase = productToSell.getPrice()*noOfProduct;
+
+        if (buyer.getBalance() < (totalCostOfPurchase)) {
+            return "not enough balance on users account";
+        }
+
+        buyer.setBalance(buyerBalance-totalCostOfPurchase);
+      productToSell.setAmount(productToSell.getAmount()-noOfProduct);
+        updateUser(buyer);
+        return "Purchase succesfull";
+    }
+
+    private void updateUser(User userToUpdate) {
+        for (User currentUser: this.users){
+
+            if (currentUser.getId().equals(userToUpdate.getId())){
+
+                currentUser.setBalance(userToUpdate.getBalance());
+            }
+        }
+
+    }
+
+    private User findUserByEmail(String userEmail) {
+        for (User currentUser : this.users) {
+            if (currentUser.getEmail().toLowerCase().equals(userEmail.toLowerCase())) {
+                return currentUser;
+            }
+        }
+        return null;
+    }
+
+    private Product findProductByName(String productName) {
+        for (Product currentProduct : this.getAllProducts()) {
+            if (currentProduct.getName().toLowerCase().equals(productName.toLowerCase())) {
+                return currentProduct;
+            }
+
+        }
+        return null;
     }
 
     public String removeUser(int userId) {
@@ -59,4 +102,20 @@ private ArrayList<User> users = new ArrayList<User>();
         return "user removed successfully";
 
     }
+
+    public String creditUser(float amount) {
+        this.user.balance = user.balance + amount;
+        return amount + " added successfully\n";
+
+    }
+
+    public String setActiveUser(User user) {
+        this.user = user;
+        return "user update successfully";
+    }
+
+    public ArrayList<User> getAllUsers() {
+        return users;
+    }
 }
+

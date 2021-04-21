@@ -1,4 +1,4 @@
-package controller;
+package types;
 
 import controller.Menu;
 
