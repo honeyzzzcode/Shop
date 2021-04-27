@@ -2,17 +2,43 @@ package controller;
 
 import entity.Product;
 import entity.User;
-
 import java.util.ArrayList;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.util.Scanner;
 
 public class Shop {
     User user;
     private static ArrayList<Product> products = new ArrayList<Product>();
     private static ArrayList<User> users = new ArrayList<User>();
 
-
+public static void FileRead(){
+    var file = new File("products.txt");
+    try (var in = new Scanner(file)) {
+        while (in.hasNext()) {
+            var prod = new Product();
+            prod.setName(in.next());
+            prod.setAmount(in.nextInt());
+            prod.setPrice(in.nextFloat());
+            products.add(prod);
+        }
+    } catch (FileNotFoundException e) {
+        System.out.println("cannot read file");
+    }
+}
+public void FileWrite(){
+    File file = new File("products.txt");
+    try (var out = new PrintWriter(file)) {
+        for (var gr : products) {
+            out.printf("%s %d  %s \n", gr.getName(), gr.getAmount(), gr.getPrice());
+        }
+    } catch (FileNotFoundException e) {
+        System.out.println("cannot save file");
+    }
+}
     public String addProduct(Product product) {
-        this.products.add(product);
+      products.add(product);
         return product.name + " added successfully";
     }
 
@@ -26,9 +52,9 @@ public class Shop {
 
     }
 
-    public String addUser(User newuser) {
-        users.add(newuser);
-        return newuser.name + " added successfully";
+    public String addUser(User newUser) {
+        users.add(newUser);
+        return newUser.name + " added successfully";
     }
 
     public ArrayList<User> getUsers() {
@@ -57,8 +83,22 @@ public class Shop {
 
         buyer.setBalance(buyerBalance-totalCostOfPurchase);
       productToSell.setAmount(productToSell.getAmount()-noOfProduct);
+
+
+
         updateUser(buyer);
+        updateProduct(productToSell);
         return "Purchase succesfull";
+    }
+
+    private void updateProduct(Product productToUpdate) {
+        for (Product currentProduct: this.products){
+
+            if (currentProduct.getName().equals(productToUpdate.getName())){
+
+                currentProduct.setAmount(productToUpdate.getAmount());
+            }
+        }
     }
 
     private void updateUser(User userToUpdate) {
@@ -117,5 +157,6 @@ public class Shop {
     public ArrayList<User> getAllUsers() {
         return users;
     }
+
 }
 

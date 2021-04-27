@@ -3,6 +3,7 @@ package controller;
 import entity.Product;
 import entity.User;
 
+import java.io.FileNotFoundException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -11,14 +12,17 @@ import java.util.UUID;
 public class Menu {
     Shop shop = new Shop();
 
-    public void menu() {
+    public void menu()  {
+        shop.FileRead();
         System.out.println("Welcome to the Flower shop!");
         boolean running = true;
         while (running) {
-            String cmd = Input.askString("1.Add Product  \t\t2. Buy Product\n3. Add User   \t\t4.Remove User\n5.View All Products  6.Leave Shop\nEnter command: \n");
+            String cmd = Input.askString("1.Add Product  \t\t2. Buy Product\n3. Add User   \t\t4.Remove User\n5.View All Products  6.Leave Shop\n7.view all users\nEnter command: \n");
             switch (cmd) {
                 case "1":
+
                     addProduct();
+shop.FileWrite();
                     break;
                 case "2":
                     sellProduct();
@@ -32,17 +36,20 @@ public class Menu {
                 case "5":
                     viewAllProducts();
                     break;
-                case "7":
-                    viewAllUsers();
-                case "6":
+                    case "6":
                     running = false;
                     break;
+                case "7":
+                    viewAllUsers();
+                    break;
+
                 default:
                     System.out.println("Unknown command");
             }
-            this.menu();
+
         }
         System.out.println("Bye Bye");
+
     }
 
     private void viewAllUsers() {
@@ -86,11 +93,11 @@ public class Menu {
 
     public void addProduct() {
 
-        Scanner scanner = new Scanner(System.in);
         Product product = new Product();
-        product.setName(Input.askString("Hello,please enter the product name:"));
-        product.price = Input.askFloat("Please enter the product price:");
-        product.amount = Input.askInt("Enter the amount:");
+
+       product.setName(Input.askString("Hello,please enter the product name:"));;
+       product.setPrice(Input.askFloat("Please enter the product price:"));;
+        product.setAmount(Input.askInt("Enter the amount:"));
 
         product.setId(UUID.randomUUID());
         product.setRegistered(LocalDate.now());
@@ -99,11 +106,11 @@ public class Menu {
 
     }
 
-    private void newUser() {
+    private void newUser()  {
 
         String name = Input.askString("Hello,please enter your name:");
         String email = Input.askString("email?");
-        float balance = 0f;
+        float balance = 30f;
         Usertype type = Input.askString("Write the type(owner or buyer)").toUpperCase().equals("OWNER")
                 ? Usertype.OWNER : Usertype.BUYER;
         LocalDate registered = LocalDate.now();

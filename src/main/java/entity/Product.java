@@ -1,12 +1,13 @@
 package entity;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 public class Product{
-
 
     private UUID id;
     public String name;
